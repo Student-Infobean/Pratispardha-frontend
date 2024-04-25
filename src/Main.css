@@ -1,0 +1,61 @@
+.navbar{
+    background-color: rgba(0,0, 0, .5);
+}
+/* Sign up page */
+.home {
+    width: 100%;
+    height: 60vh;
+    margin-top: 150px;
+    border-radius: 10%;
+    background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.2)), url(./images/signup.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.home .text {
+    text-align: center;
+    padding-top: 0px;
+}
+
+.text h5 {
+    font-size: 30px;
+    color: rgb(244, 5, 5);
+
+}
+
+.text a:hover {
+    background: #ffa500;
+    color: white;
+}
+
+h4 {
+    font-size: 2em;
+    font-family: serif;
+    color: transparent;
+    text-align: center;
+    animation: effect 2s linear infinite;
+}
+
+@keyframes effect {
+    0% {
+        background: linear-gradient(#1b0707, #e30404);
+        -webkit-background-clip: text;
+    }
+
+    100% {
+        background: linear-gradient(#161cd0, #ff0000);
+        -webkit-background-clip: text;
+    }
+}
+
+/* Sign In page */
+@media screen and (max-width: 1040px) {
+#signin{
+    visibility: hidden;
+}
+}
+
+/*....*/
+
+
+

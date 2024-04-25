@@ -1,0 +1,70 @@
+.contain {
+ display: flex;
+ justify-content:start;
+ margin-top: 130px;
+ 
+}
+
+body {
+  background: #FDFFFF;
+  height: 50vh;
+
+}
+
+
+.dynamic-text{
+  margin: none;
+  list-style: none;
+  position: absolute;
+  overflow: hidden;
+  height: 70%;
+}
+
+.item {
+  position: relative;
+  top:2;
+  animation: move 6s infinite 0s;
+  &:first-child {
+    color: #01BAEF;
+  }
+  &:nth-child(2) {
+    color: #F79256;
+  }
+  &:nth-child(3) {
+    color: #0FA3B1;
+  }
+  &:nth-child(4) {
+    color: #FE5F55;
+  }
+  &:nth-child(5) {
+    color: #B0DB43;
+  }
+}
+
+@keyframes move {
+  0% {
+    top: 0px; 
+  }
+  20% {
+    top: -700px;
+  }
+  40% {
+    top: -700px;
+  }
+  80% {
+    top: -700px;
+  }
+  60% {
+    top: -700px;
+  }
+}
+#card {
+  position: relative;
+  overflow: hidden;
+}
+
+#slider {
+  position: sticky;
+  top:0; 
+  z-index:-1; 
+}

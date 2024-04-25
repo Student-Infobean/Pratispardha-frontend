@@ -1,12 +1,11 @@
 import logo from "../images/logo.jpg";
 function Header() {
     return <>
-        <div class="container-fliud">
-
-            <nav class="navbar navbar-expand-lg navbar-light" style={{ backgroundColor: "rgb(238,18,18)" }}>
+        <div class="container-fliud bg-info  fixed-top">
+            <nav class="navbar navbar-expand-lg navbar-light">
                 <div class="container-fluid">
                     <div class="row">
-                        <div class="col-lg-4 col-md-4 col-sm-12 col-12 ms-5" style={{marginRight:"170px"}}>
+                        <div class="col-lg-6 col-md-6 col-sm-12 col-12 ms-5" style={{marginRight:"170px"}}>
                             <img src={logo} alt="" width="60px" height="60px" />
                         </div>
                     </div>
@@ -22,7 +21,7 @@ function Header() {
                             </li>
                             <ul class="navbar-nav text-center">
                                 <li class="nav-item dropdown">
-                                    <a class="nav-link text-white px-5" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <a  class="nav-link text-white px-5" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                         Players
                                     </a>
                                 </li>
