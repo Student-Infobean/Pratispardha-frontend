@@ -4,7 +4,20 @@ import club1 from "../images/club.webp"
 import post from "../images/post.jpg"
 import post1 from "../images/post1.jpg"
 import "./css"
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchTeamRequest } from "../redux-config/PlayerSlice";
 function Teamrequest() {
+    const { activePlayer, isLoggedIn } = useSelector((store) => store.player);
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        if (activePlayer && activePlayer._id) {
+            dispatch(fetchTeamRequest(activePlayer._id));
+        }
+    }, []);
+    const teamRequests = activePlayer ? activePlayer.requestedTeam : [];
+    console.log(teamRequests);
     return <>
         <Header />
         <div id="carouselExampleDark" className="carousel carousel-dark slide" data-bs-ride="carousel">
@@ -23,21 +36,23 @@ function Teamrequest() {
         <div className="container  fluid mt-5 mb-5 ">
             <div className="row d-flex">
                 <div id="card" className="col-lg-8 col-md-12 col-sm-12 col-12">
-                    <div className="d-flex border border-secondary mt-3" style={{ boxShadow: "10px 10px 5px gray", height: "40vh" }}>
-                        <div className="w-50">
-                            <img src={club1} className=" border border-danger rounded mx-4 mt-4 img-fluid h-75 p-2" />
-                        </div>
-                        <div className="w-75">
-                            <div className="fs-1 mt-4  fw-bolder">Desafio CD Escorial</div>
-                            <div>Current Player : 5</div>
-                            <div>The Falcon is the popular and most powerful team in the Tournament........</div>
-                            <div className="fw-bolder fs-2">____________________</div>
-                            <div className="d-flex justify-content-end p-4">
-                                <button className="btn btn-outline-warning rounded-pill w-25 me-4">Accept</button>
-                                <button className="btn btn-outline-danger rounded-pill w-25 me-5" style={{ fontSize: "20px" }}>Reject</button>
+                    {/* {teamRequests.map((request, index) => (
+                        <div key={index} className="d-flex border border-secondary mt-3" style={{ boxShadow: "10px 10px 5px gray", height: "40vh" }}>
+                            <div className="w-50">
+                                <img src={club1} className=" border border-danger rounded mx-4 mt-4 img-fluid h-75 p-2" />
+                            </div>
+                            <div className="w-75">
+                                <div className="fs-1 mt-4  fw-bolder">Desafio CD Escorial</div>
+                                <div>Current Player : 5</div>
+                                <div>The Falcon is the popular and most powerful team in the Tournament........</div>
+                                <div className="fw-bolder fs-2">____________________</div>
+                                <div className="d-flex justify-content-end p-4">
+                                    <button className="btn btn-outline-warning rounded-pill w-25 me-4">Accept</button>
+                                    <button className="btn btn-outline-danger rounded-pill w-25 me-5" style={{ fontSize: "20px" }}>Reject</button>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    ))} */}
                     <div className="d-flex border border-secondary mt-3" style={{ boxShadow: "10px 10px 5px gray", height: "40vh" }}>
                         <div className="w-50">
                             <img src={club1} className=" border border-danger rounded mx-4 mt-4 img-fluid h-75 p-2" />

@@ -8,12 +8,15 @@ import Api from "./Webapi";
 import "./css"
 import { useRef } from "react";
 import axios from "axios";
-
+import { useDispatch } from "react-redux";
+import { setCurrentPlayer } from "../redux-config/PlayerSlice";
 import { toast,ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 function Signin() {
     const navigate = useNavigate();
     const emailInput = useRef();
     const passwordInput = useRef();
+    const dispatch=useDispatch();
     const signin = async () => {
         let email = emailInput.current.value;
         let password = passwordInput.current.value;
@@ -22,8 +25,10 @@ function Signin() {
             let response = await axios.post(Api.PlayerSignin, { email, password });
             let player = response.data.player;
             delete player.password;
+            dispatch(setCurrentPlayer(player))
             saveplayer(player);
-            navigate("/");
+            console.log('Saved')
+            navigate("/Teamdetails");
         }catch(err){
             console.log(err);
             toast.error("Oops something went wrong");
