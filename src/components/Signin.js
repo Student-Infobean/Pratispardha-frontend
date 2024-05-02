@@ -25,10 +25,11 @@ function Signin() {
             let response = await axios.post(Api.PlayerSignin, { email, password });
             let player = response.data.player;
             delete player.password;
-            dispatch(setCurrentPlayer(player))
+            console.log(response)
             saveplayer(player);
+            dispatch(setCurrentPlayer(player))
             console.log('Saved')
-            navigate("/Teamdetails");
+            navigate("/");
         }catch(err){
             console.log(err);
             toast.error("Oops something went wrong");
@@ -38,7 +39,6 @@ function Signin() {
           sessionStorage.setItem("current-user",JSON.stringify(player));
         }
     return <>
-        <Header />
         <ToastContainer/>
         <section className="h-100 gradient-form" style={{ backgroundColor: "#eee" }}>
             <div className="container py-1 h-100">
@@ -76,7 +76,7 @@ function Signin() {
 
                                         <div className="d-flex align-items-center justify-content-center pb-4">
                                             <p className="mb-0 me-2">Don't have an account?</p>
-                                            <button onClick={() => navigate("/Signup")} type="button" className="btn btn-outline-danger">Create new</button>
+                                            <button onClick={() => navigate("/Signup")} type="button" className="btn btn-outline-danger click">Create new</button>
                                         </div>
                                     </div>
                                 </div>

@@ -5,7 +5,6 @@ import Api from "../components/Webapi"
 export const getTeams = createAsyncThunk("TeamSLice/getTeams", async () => {
     try {
         let response = await axios.get(Api.teamList);
-        console.log(response.data);
         return response.data.teams
     } catch (error) {
     }

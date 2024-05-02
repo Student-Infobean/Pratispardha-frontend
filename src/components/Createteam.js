@@ -15,6 +15,8 @@ import "react-toastify/dist/ReactToastify.css";
 import { toast,ToastContainer } from "react-toastify";
 function Createteam() {
     const {activePlayer,isLoggedIn}=useSelector((store)=>store.player);
+    let currentPlayer = JSON.parse(sessionStorage.getItem('current-user'));
+    console.log(currentPlayer);
     const teamnameInput = useRef();
     const bannerInput = useRef();
     const logoInput = useRef();
@@ -27,11 +29,11 @@ function Createteam() {
         formData.append('personalPlayers', perplayerInput.current.value);
         formData.append('logo', logoInput.current.files[0]);
         formData.append('banner', bannerInput.current.files[0]);
-        formData.append("captain",activePlayer._id);
+        formData.append("captain",currentPlayer._id);
         try {
             const response = await axios.post(Api.createTeam, formData);
             console.log(response.data);
-            toast("Team SuccessFully Created");
+            toast(response.data.result);
         } catch (error) {
             console.error('Error:', error);
             toast("Oops Something wents wrong");
@@ -87,7 +89,7 @@ function Createteam() {
                         </div>
                     </div>
                 </div>
-                <center><button onClick={createTeam} className="mt-4 rounded-pill" style={{ backgroundColor: "#F01E51" }}> Create</button></center>
+                <center><button onClick={createTeam} className="mt-4 rounded-pill click" style={{ backgroundColor: "#F01E51" }}> Create</button></center>
 
             </fieldset>
         </div>

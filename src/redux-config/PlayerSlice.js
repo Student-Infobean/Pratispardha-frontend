@@ -5,8 +5,8 @@ import axios from "axios";
 export const fetchTeamRequest = createAsyncThunk("playerSlice/fetchTeamRequest",async(playerId)=>{
     try{
        let response = await axios.get(`${Api.getPlayerbyId}/${playerId}`);
-       console.log(response.data);
-       return response.data;
+       
+       return response.data.result.requestedTeam;
     }
     catch(err){
       console.log(err);
@@ -25,6 +25,14 @@ const slice=createSlice({
         setCurrentPlayer:(state,action)=>{
             state.activePlayer=action.payload;
             state.isLoggedIn=true;
+        },
+        logOut : (state, action) =>{
+            state.activePlayer = null;
+            state.isLoggedIn = false;
+            state.requestedTeam = [];
+            state.isLoading = false;
+            state.error  = null;
+            sessionStorage.clear();
         }
     },
     extraReducers:(builder)=>{
@@ -32,12 +40,13 @@ const slice=createSlice({
             state.isLoading=true;
         }).addCase(fetchTeamRequest.fulfilled,(state,action)=>{
             state.isLoading=false;
-            state.requestedTeam=action.payload.data;
+           
+            state.requestedTeam=action.payload;
         }).addCase(fetchTeamRequest.rejected,(state,action)=>{
             state.error="Oops something went wrong";
         })
 
     }
 });
-export const {setCurrentPlayer} =slice.actions;
+export const {setCurrentPlayer, logOut} =slice.actions;
 export default slice.reducer;

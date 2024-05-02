@@ -8,18 +8,18 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchTeamRequest } from "../redux-config/PlayerSlice";
 function Teamrequest() {
-    const { activePlayer, isLoggedIn } = useSelector((store) => store.player);
+    const { activePlayer, isLoggedIn, requestedTeam } = useSelector((store) => store.player);
     const dispatch = useDispatch();
-
+    let playerExists = JSON.parse(sessionStorage.getItem('current-user'))
     useEffect(() => {
-        if (activePlayer && activePlayer._id) {
-            dispatch(fetchTeamRequest(activePlayer._id));
+        if (playerExists && playerExists._id) {
+            dispatch(fetchTeamRequest(playerExists._id));
         }
     }, []);
     const teamRequests = activePlayer ? activePlayer.requestedTeam : [];
-    console.log(teamRequests);
+    console.log(requestedTeam)
     return <>
-        <Header />
+        
         <div id="carouselExampleDark" className="carousel carousel-dark slide" data-bs-ride="carousel">
             <div className="carousel-inner">
                 <div className="carousel-item active" data-bs-interval="10000">
@@ -63,8 +63,8 @@ function Teamrequest() {
                             <div>The Falcon is the popular and most powerful team in the Tournament........</div>
                             <div className="fw-bolder fs-2">____________________</div>
                             <div className="d-flex justify-content-end p-4">
-                                <button className="btn btn-outline-warning rounded-pill w-25 me-4">Accept</button>
-                                <button className="btn btn-outline-danger rounded-pill w-25 me-5" style={{ fontSize: "20px" }}>Reject</button>
+                                <button className="btn btn-outline-warning rounded-pill w-25 me-4 click">Accept</button>
+                                <button className="btn btn-outline-danger rounded-pill w-25 me-5 click" style={{ fontSize: "20px" }}>Reject</button>
                             </div>
                         </div>
                     </div>
@@ -93,8 +93,8 @@ function Teamrequest() {
                             <div>The Falcon is the popular and most powerful team in the Tournament........</div>
                             <div className="fw-bolder fs-2">____________________</div>
                             <div className="d-flex justify-content-end p-4">
-                                <button className="btn btn-outline-warning rounded-pill w-25 me-4">Accept</button>
-                                <button className="btn btn-outline-danger rounded-pill w-25 me-5" style={{ fontSize: "20px" }}>Reject</button>
+                                <button className="btn btn-outline-warning rounded-pill w-25 me-4 click">Accept</button>
+                                <button className="btn btn-outline-danger rounded-pill w-25 me-5 click" style={{ fontSize: "20px" }}>Reject</button>
                             </div>
                         </div>
                     </div>
