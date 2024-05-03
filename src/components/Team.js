@@ -27,6 +27,7 @@ function Team() {
                         <h1 style={{ position: 'absolute', marginTop: '', marginLeft: '10%', color: 'white', fontSize: '5vw' }}>TEAM </h1>
                         <p className="text-light  text-center fs-2 ">Create your own <i className="fa fs-2 fa-angle-right text-light"> Team</i></p>
                         <button onClick={() => navigate("/Createteam")} className="btn btn-danger mx-5">Create Team</button>
+                        <button onClick={() => navigate("/Teamdetails")} className="btn btn-danger mx-5"> Team</button>
                     </div>
                 </div>
             </div>

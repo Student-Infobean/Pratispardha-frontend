@@ -68,3 +68,140 @@ body {
   top:0; 
   z-index:-1; 
 }
+
+.card__description {
+  margin: 10px 0 0;
+  font-size: 14px;
+  color: #777;
+  line-height: 1.4;
+}
+.card5 {
+  width: 700px;
+  height: 453px;
+  background-color: rgb(255, 255, 255);
+  position: relative;
+  overflow: hidden;
+}
+
+.card5:before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(45deg, #8f7eff, #44a4ff);
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out;
+}
+
+.card5:hover:before {
+  opacity: 0.5;
+}
+
+.card5-content {
+  width: 470px;
+  height: 450px;
+  padding: 0 10px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -45%);
+  text-align: center;
+  color: rgb(0, 0, 0);
+  z-index: 1;
+  background-color: white;
+  transition: all 0.3s ease-in-out;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  flex-direction: column;
+}
+
+.card5-content span {
+  font-size: 1.7rem;
+  font-weight: 700;
+}
+
+.card5:hover .card5-content {
+  transform: translate(-50%, -50%);
+}
+.cardteam {
+  width: 100%;
+  max-width: 300px;
+  min-width: 200px;
+  height: 250px;
+  background-color:white;
+  margin: 10px;
+  border-radius: 10px;
+  box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.24);
+  border: 2px solid rgba(7, 7, 7, 0.12);
+  font-size: 16px;
+  transition: all 0.3s ease;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  cursor: pointer;
+  font-family: 'Poppins', sans-serif;
+}
+
+.icon {
+  margin: 0 auto;
+  width: 100%;
+  height: 80px;
+  max-width: 80px;
+  background: linear-gradient(90deg, #7eaaff 0%, #ff48fb 40%, rgba(62, 57, 57, 0.249) 60%);
+  border-radius: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: all 0.8s ease;
+  background-position: 0px;
+  background-size: 200px;
+}
+
+.icon svg {
+  fill: white;
+}
+
+.cardteam .title {
+  width: 100%;
+  margin: 0;
+  text-align: center;
+  margin-top: 30px;
+  color: #DE1515;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 4px;
+}
+
+.cardteam .text {
+  width: 80%;
+  margin: 0 auto;
+  font-size: 13px;
+  text-align: center;
+  margin-top: 20px;
+  color: black;
+  font-weight: 200;
+  letter-spacing: 2px;
+  opacity: 0;
+  max-height: 0;
+  transition: all 0.3s ease;
+}
+
+.cardteam:hover {
+  height: 270px;
+}
+
+.cardteam:hover .text {
+  transition: all 0.3s ease;
+  opacity: 1;
+  max-height: 40px;
+}
+
+.cardteam:hover .icon {
+  background-position: -120px;
+  transition: all 0.3s ease;
+}

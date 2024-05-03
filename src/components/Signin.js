@@ -1,17 +1,16 @@
-import TextField from "@mui/material/TextField";
 import logo from "../images/logo.jpg"
 import cric from "../images/signinimage.jpg"
 import Header from "./Header";
 import { useNavigate } from "react-router-dom";
-import Footer from "./Footer";
 import Api from "./Webapi";
-import "./css"
+import "./css";
 import { useRef } from "react";
 import axios from "axios";
 import { useDispatch } from "react-redux";
 import { setCurrentPlayer } from "../redux-config/PlayerSlice";
 import { toast,ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+
 function Signin() {
     const navigate = useNavigate();
     const emailInput = useRef();
@@ -28,7 +27,7 @@ function Signin() {
             dispatch(setCurrentPlayer(player))
             saveplayer(player);
             console.log('Saved')
-            navigate("/Teamdetails");
+            navigate("/Team");
         }catch(err){
             console.log(err);
             toast.error("Oops something went wrong");
@@ -91,7 +90,7 @@ function Signin() {
                 </div>
             </div>
         </section>
-        <Footer />
+       
     </>
 }
 export default Signin;

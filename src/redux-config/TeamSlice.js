@@ -10,6 +10,7 @@ export const getTeams = createAsyncThunk("TeamSLice/getTeams", async () => {
     } catch (error) {
     }
 });
+
 const slice = createSlice({
     name: "TeamSlice",
     initialState: {
