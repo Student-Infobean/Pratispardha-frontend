@@ -6,5 +6,6 @@ export default {
     createTeam:"http://localhost:3001/team/create",
     getTeamId:"http://localhost:3001/team/viewteam",
     getPlayersWithJoinStatus:"http://localhost:3001/player/getAllPlayersWithJoinStatus",
-    getAllTournaments:"http://localhost:3001/tournament/tournaments"
+    getAllTournaments:"http://localhost:3001/tournament/tournaments",
+    getPoints:"http://localhost:3001/point/getPoints"
 };

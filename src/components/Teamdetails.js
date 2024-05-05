@@ -2,16 +2,10 @@ import Header from "./Header";
 import "../Team.css";
 import "../popup.css"
 import { useEffect, useState } from "react";
-import banner from "../images/banner.jpeg";
-import { Modal } from "bootstrap";
-import { useNavigate } from "react-router-dom";
 import club from "../images/club-1.webp";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 function Teamdetails() {
-    const { activePlayer, isLoggedIn } = useSelector((store) => store.player);
     const { team } = useSelector((store) => store.teamdetail);
-    const navigate = useNavigate();
-    const dispatch = useDispatch();
     const baseUrl = 'http://localhost:3001/images/';
     const [popup, setPop] = useState(false)
     useEffect(() => {

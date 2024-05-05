@@ -1,4 +1,3 @@
-import Header from "./components/Header";
 import Signin from "./components/Signin";
 import Signup from "./components/Signup";
 import { Routes,Route } from "react-router-dom";
@@ -9,6 +8,7 @@ import Teamdetails from "./components/Teamdetails";
 import { createContext } from "react";
 import Allplayer from "./components/Allplayer";
 import PointTable from "./components/PointTable";
+import Footer from "./components/Footer";
 export const PlayerContext=createContext();
 function App() {
 
@@ -23,7 +23,6 @@ function App() {
       <Route path="/Allplayers" element={<Allplayer/>}/>
       <Route path="/Pointtable" element={<PointTable/>}/>
     </Routes>
-
   </>
 };
 export default App;

@@ -1,11 +1,11 @@
 import Header from "./Header";
 import view from "../images/create.jpg"
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import Api from "./Webapi";
 function PointTable() {
     const [myData, setmyData] = useState([]);
-    const selectInput = useRef();
+    const [tournamentTeams, setTournamentTeams] = useState([]);
     const [selectedTournament, setSelectedTournament] = useState(null);
     useEffect(() => {
         axios.get(Api.getAllTournaments).then((response) => {
@@ -16,13 +16,25 @@ function PointTable() {
     const savetournament = (myData) => {
         sessionStorage.setItem("tournament", JSON.stringify(myData))
     }
-    const handleTournamentChange = (e) => {
-        const value = e.target.value;
-        const [name, _id] = value.split('|'); // Split the value to get name and id
-        setSelectedTournament({ name, _id });
-        console.log(name + " " + _id);
-    };
-    console.log(selectedTournament);
+    const handleTournamentChange = async (e) => {
+        const tournamentId = e.target.value;
+        setSelectedTournament(tournamentId);
+    }
+
+    useEffect(() => {
+        if (selectedTournament) {
+            try {
+                axios.get(Api.getPoints + `/${selectedTournament}`)
+                    .then((response) => {
+                        setTournamentTeams(response.data.result);
+                    })
+                    .catch((error) => console.log("Server error", error));
+            } catch (error) {
+                console.log(error);
+            }
+        }
+    }, [selectedTournament]);
+    console.log(tournamentTeams);
     return <>
         <Header />
         <div id="carouselExampleDark" className="carousel carousel-dark slide" data-bs-ride="carousel">
@@ -43,23 +55,23 @@ function PointTable() {
                     <h1 >TEAM RATINGS</h1>
                     <p className="fs-5">All Tournaments</p>
                     <select class="form-select w-25" onChange={handleTournamentChange} aria-label="Default select example">
-                        <option> Select</option>
+                        <option>Select</option>
                         {myData.map((data, index) => {
-                            return <option value={`${data.name}|${data._id}`}>{new Date() <= new Date(data.endDate) ? data.name : ''}</option>
+                            return <option key={index} value={data._id} style={{textTransform: "capitalize" }}>{new Date() <= new Date(data.endDate) ? data.name : ''}</option>
                         })}
                     </select>
                 </div>
-                {selectedTournament == null || selectedTournament === "All Tournaments" ? <div className="col-lg-12 mt-5">
-                    <div class="table-responsive" style={{ position: "relative", height: "700px" }}>
-                        <table class="table  mb-0">
-                            <thead style={{ backgroundColor: "#393939", position: "sticky", top: "0" }}>
+                {selectedTournament == null || selectedTournament === "Select" ? <div className="col-lg-12 mt-5">
+                    <div class="table-responsive" style={{ position: "relative", height: "auto" }}>
+                        <table class="table table-striped  mb-0">
+                            <thead  className="table-dark" style={{ backgroundColor: "#393939", position: "sticky", top: "0" }}>
                                 <tr>
                                     <th scope="col">S.NO.</th>
                                     <th scope="col">TEAM NAME</th>
                                     <th scope="col">ADDRESS</th>
                                     <th scope="col">START DATE</th>
                                     <th scope="col">END DATE</th>
-                                    <th scope="col">NRR</th>
+                                    <th scope="col">Team Limit</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -70,7 +82,7 @@ function PointTable() {
                                         <td>{data.address.toUpperCase()}</td>
                                         <td>{data.startDate.slice(0, 10).toUpperCase()}</td>
                                         <td>{data.endDate.slice(0, 10).toUpperCase()}</td>
-                                        <td>{data.tournamentTeams}</td>
+                                        <td>{data.teamLimit}</td>
                                     </tr>
 
                                 })}
@@ -78,9 +90,9 @@ function PointTable() {
                         </table>
                     </div>
                 </div> : <div className="col-lg-12 mt-5">
-                    <div class="table-responsive" style={{ position: "relative", height: "700px" }}>
-                        <table class="table  mb-0">
-                            <thead style={{ backgroundColor: "#393939", position: "sticky", top: "0" }}>
+                    { <div class="table-responsive" style={{ position: "relative", height: "auto" }}>
+                        <table class="table table-striped  mb-0">
+                            <thead className="table-dark" style={{ position: "sticky", top: "0" }}>
                                 <tr>
                                     <th scope="col">POS</th>
                                     <th scope="col">TEAM</th>
@@ -92,16 +104,24 @@ function PointTable() {
                                 </tr>
                             </thead>
                             <tbody>
-                                {myData.find(tournament => tournament._id === selectedTournament.id)?.tournamentTeams.map((team, index) => (
-                                    <tr key={index}>
-                                        <td>{index + 1}</td>
-                                        <td>{team.teamId.name}</td> 
-                                        {/* Add other team data here */}
-                                    </tr>
-                                ))}
+                                {tournamentTeams.sort((a,b)=>{if (a.points !== b.points) {
+                                                return b.points - a.points;
+                                            } else {
+                                                return b.netRunRate - a.netRunRate;
+                                            }}).map((team,index)=>{
+                                     return <tr key={index}>
+                                     <td>{index + 1}</td>
+                                     <td>{team.teamId.name}</td>
+                                     <td>{team.matchesPlayed}</td>
+                                     <td>{team.win}</td>
+                                     <td>{team.loss}</td>
+                                     <td>{team.netRunRate}</td>
+                                     <td>{team.points}</td>
+                                 </tr>
+                                })}
                             </tbody>
                         </table>
-                    </div>
+                    </div> }
                 </div>}
             </div>
         </div >
