@@ -5,5 +5,6 @@ export default {
     teamList:"http://localhost:3001/team/teamlist",
     createTeam:"http://localhost:3001/team/create",
     getTeamId:"http://localhost:3001/team/viewteam",
-    getPlayersWithJoinStatus:"http://localhost:3001/player/getAllPlayersWithJoinStatus"
+    getPlayersWithJoinStatus:"http://localhost:3001/player/getAllPlayersWithJoinStatus",
+    getAllTournaments:"http://localhost:3001/tournament/tournaments"
 };

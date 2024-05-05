@@ -1,6 +1,28 @@
 import Header from "./Header";
 import view from "../images/create.jpg"
+import { useEffect, useRef, useState } from "react";
+import axios from "axios";
+import Api from "./Webapi";
 function PointTable() {
+    const [myData, setmyData] = useState([]);
+    const selectInput = useRef();
+    const [selectedTournament, setSelectedTournament] = useState(null);
+    useEffect(() => {
+        axios.get(Api.getAllTournaments).then((response) => {
+            setmyData(response.data.tournaments);
+            savetournament(response.data.tournaments)
+        }).catch((error) => console.log("Server error", error));
+    }, []);
+    const savetournament = (myData) => {
+        sessionStorage.setItem("tournament", JSON.stringify(myData))
+    }
+    const handleTournamentChange = (e) => {
+        const value = e.target.value;
+        const [name, _id] = value.split('|'); // Split the value to get name and id
+        setSelectedTournament({ name, _id });
+        console.log(name + " " + _id);
+    };
+    console.log(selectedTournament);
     return <>
         <Header />
         <div id="carouselExampleDark" className="carousel carousel-dark slide" data-bs-ride="carousel">
@@ -17,180 +39,72 @@ function PointTable() {
         </div>
         <div className="container mt-3">
             <div className="row">
-                <h1 className="ms-5">TEAM RATINGS</h1>
-                <div className="col-lg-12 mt-5">
+                <div className="ms-5">
+                    <h1 >TEAM RATINGS</h1>
+                    <p className="fs-5">All Tournaments</p>
+                    <select class="form-select w-25" onChange={handleTournamentChange} aria-label="Default select example">
+                        <option> Select</option>
+                        {myData.map((data, index) => {
+                            return <option value={`${data.name}|${data._id}`}>{new Date() <= new Date(data.endDate) ? data.name : ''}</option>
+                        })}
+                    </select>
+                </div>
+                {selectedTournament == null || selectedTournament === "All Tournaments" ? <div className="col-lg-12 mt-5">
                     <div class="table-responsive" style={{ position: "relative", height: "700px" }}>
                         <table class="table  mb-0">
-                            <thead style={{backgroundColor:"#393939",position:"sticky",top:"0"}}>
+                            <thead style={{ backgroundColor: "#393939", position: "sticky", top: "0" }}>
                                 <tr>
-                                    <th scope="col">Class name</th>
-                                    <th scope="col">Type</th>
-                                    <th scope="col">Hours</th>
-                                    <th scope="col">Trainer</th>
-                                    <th scope="col">Spots</th>
+                                    <th scope="col">S.NO.</th>
+                                    <th scope="col">TEAM NAME</th>
+                                    <th scope="col">ADDRESS</th>
+                                    <th scope="col">START DATE</th>
+                                    <th scope="col">END DATE</th>
+                                    <th scope="col">NRR</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>Like a butterfly</td>
-                                    <td>Boxing</td>
-                                    <td>9:00 AM - 11:00 AM</td>
-                                    <td>Aaron Chapman</td>
-                                    <td>10</td>
-                                </tr>
-                                <tr>
-                                    <td>Mind &amp; Body</td>
-                                    <td>Yoga</td>
-                                    <td>8:00 AM - 9:00 AM</td>
-                                    <td>Adam Stewart</td>
-                                    <td>15</td>
-                                </tr>
-                                <tr>
-                                    <td>Crit Cardio</td>
-                                    <td>Gym</td>
-                                    <td>9:00 AM - 10:00 AM</td>
-                                    <td>Aaron Chapman</td>
-                                    <td>10</td>
-                                </tr>
-                                <tr>
-                                    <td>Wheel Pose Full Posture</td>
-                                    <td>Yoga</td>
-                                    <td>7:00 AM - 8:30 AM</td>
-                                    <td>Donna Wilson</td>
-                                    <td>15</td>
-                                </tr>
-                                <tr>
-                                    <td>Playful Dancer's Flow</td>
-                                    <td>Yoga</td>
-                                    <td>8:00 AM - 9:00 AM</td>
-                                    <td>Donna Wilson</td>
-                                    <td>10</td>
-                                </tr>
-                                <tr>
-                                    <td>Zumba Dance</td>
-                                    <td>Dance</td>
-                                    <td>5:00 PM - 7:00 PM</td>
-                                    <td>Donna Wilson</td>
-                                    <td>20</td>
-                                </tr>
-                                <tr>
-                                    <td>Cardio Blast</td>
-                                    <td>Gym</td>
-                                    <td>5:00 PM - 7:00 PM</td>
-                                    <td>Randy Porter</td>
-                                    <td>10</td>
-                                </tr>
-                                <tr>
-                                    <td>Pilates Reformer</td>
-                                    <td>Gym</td>
-                                    <td>8:00 AM - 9:00 AM</td>
-                                    <td>Randy Porter</td>
-                                    <td>10</td>
-                                </tr>
-                                <tr>
-                                    <td>Supple Spine and Shoulders</td>
-                                    <td>Yoga</td>
-                                    <td>6:30 AM - 8:00 AM</td>
-                                    <td>Randy Porter</td>
-                                    <td>15</td>
-                                </tr>
-                                <tr>
-                                    <td>Yoga for Divas</td>
-                                    <td>Yoga</td>
-                                    <td>9:00 AM - 11:00 AM</td>
-                                    <td>Donna Wilson</td>
-                                    <td>20</td>
-                                </tr>
-                                <tr>
-                                    <td>Virtual Cycle</td>
-                                    <td>Gym</td>
-                                    <td>8:00 AM - 9:00 AM</td>
-                                    <td>Randy Porter</td>
-                                    <td>20</td>
-                                </tr>
-                                <tr>
-                                    <td>Like a butterfly</td>
-                                    <td>Boxing</td>
-                                    <td>9:00 AM - 11:00 AM</td>
-                                    <td>Aaron Chapman</td>
-                                    <td>10</td>
-                                </tr>
-                                <tr>
-                                    <td>Mind &amp; Body</td>
-                                    <td>Yoga</td>
-                                    <td>8:00 AM - 9:00 AM</td>
-                                    <td>Adam Stewart</td>
-                                    <td>15</td>
-                                </tr>
-                                <tr>
-                                    <td>Crit Cardio</td>
-                                    <td>Gym</td>
-                                    <td>9:00 AM - 10:00 AM</td>
-                                    <td>Aaron Chapman</td>
-                                    <td>10</td>
-                                </tr>
-                                <tr>
-                                    <td>Wheel Pose Full Posture</td>
-                                    <td>Yoga</td>
-                                    <td>7:00 AM - 8:30 AM</td>
-                                    <td>Donna Wilson</td>
-                                    <td>15</td>
-                                </tr>
-                                <tr>
-                                    <td>Playful Dancer's Flow</td>
-                                    <td>Yoga</td>
-                                    <td>8:00 AM - 9:00 AM</td>
-                                    <td>Donna Wilson</td>
-                                    <td>10</td>
-                                </tr>
-                                <tr>
-                                    <td>Zumba Dance</td>
-                                    <td>Dance</td>
-                                    <td>5:00 PM - 7:00 PM</td>
-                                    <td>Donna Wilson</td>
-                                    <td>20</td>
-                                </tr>
-                                <tr>
-                                    <td>Cardio Blast</td>
-                                    <td>Gym</td>
-                                    <td>5:00 PM - 7:00 PM</td>
-                                    <td>Randy Porter</td>
-                                    <td>10</td>
-                                </tr>
-                                <tr>
-                                    <td>Pilates Reformer</td>
-                                    <td>Gym</td>
-                                    <td>8:00 AM - 9:00 AM</td>
-                                    <td>Randy Porter</td>
-                                    <td>10</td>
-                                </tr>
-                                <tr>
-                                    <td>Supple Spine and Shoulders</td>
-                                    <td>Yoga</td>
-                                    <td>6:30 AM - 8:00 AM</td>
-                                    <td>Randy Porter</td>
-                                    <td>15</td>
-                                </tr>
-                                <tr>
-                                    <td>Yoga for Divas</td>
-                                    <td>Yoga</td>
-                                    <td>9:00 AM - 11:00 AM</td>
-                                    <td>Donna Wilson</td>
-                                    <td>20</td>
-                                </tr>
-                                <tr>
-                                    <td>Virtual Cycle</td>
-                                    <td>Gym</td>
-                                    <td>8:00 AM - 9:00 AM</td>
-                                    <td>Randy Porter</td>
-                                    <td>20</td>
-                                </tr>
+                                {myData.map((data, index) => {
+                                    return <tr key={index}>
+                                        <td>{index + 1}</td>
+                                        <td>{data.name.toUpperCase()}</td>
+                                        <td>{data.address.toUpperCase()}</td>
+                                        <td>{data.startDate.slice(0, 10).toUpperCase()}</td>
+                                        <td>{data.endDate.slice(0, 10).toUpperCase()}</td>
+                                        <td>{data.tournamentTeams}</td>
+                                    </tr>
+
+                                })}
                             </tbody>
                         </table>
                     </div>
-                </div>
+                </div> : <div className="col-lg-12 mt-5">
+                    <div class="table-responsive" style={{ position: "relative", height: "700px" }}>
+                        <table class="table  mb-0">
+                            <thead style={{ backgroundColor: "#393939", position: "sticky", top: "0" }}>
+                                <tr>
+                                    <th scope="col">POS</th>
+                                    <th scope="col">TEAM</th>
+                                    <th scope="col">P</th>
+                                    <th scope="col">W</th>
+                                    <th scope="col">L</th>
+                                    <th scope="col">NRR</th>
+                                    <th scope="col">PTS</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {myData.find(tournament => tournament._id === selectedTournament.id)?.tournamentTeams.map((team, index) => (
+                                    <tr key={index}>
+                                        <td>{index + 1}</td>
+                                        <td>{team.teamId.name}</td> 
+                                        {/* Add other team data here */}
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>}
             </div>
-        </div>
+        </div >
     </>
 }
 export default PointTable;
