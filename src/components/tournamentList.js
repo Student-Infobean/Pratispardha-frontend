@@ -6,13 +6,16 @@ import { useEffect } from 'react'
 import touramentImage from '../images/tourment.png'
 const css = `
     .t-item{
-        height : 420px
+        height : 420px;
     }
     .backgroundImage {
         background-image: url(${bgImage});
         background-attachment: fixed;
         background-size: cover;
         height : auto
+    }
+    .t-name{
+        font-size : 1.1rem;
     }
     
     @media (max-width: 767.98px) {
@@ -62,12 +65,14 @@ function TournamentList(){
                 <h1 className='text-center text-white pt-lg-4 pt-md-3 upcoming' >Upcoming tournamets</h1>
                 <div className='row d-flex justify-content-center'>
                     {tournaments.map((item, index) =><div className='mt-lg-3 m-lg-4 col-lg-3 col-md-3 mt-md-3 m-md-3 mt-sm-4 m-sm-5 col-sm-10 t-item' data-aos='zoom-out' key={index} style={{backgroundColor : 'rgba(0, 0, 0, 0.5)'}}>
-                            <h5 className='text-white text-center mt-lg-4 mt-md-3 mt-sm-3 start'>startDate : {new Date(item.startDate).toLocaleDateString()}</h5>
+                            <h5 className='text-white text-center mt-lg-4 mt-md-3 mt-sm-3 start'>Start Date : {new Date(item.startDate).toLocaleDateString()}</h5>
                             <div className='h-50 text-center'>
                                 <img src={touramentImage} className='h-75 mt-lg-4 mt-sm-4'/>
                             </div>
-                            <h5 className='text-center text-white t-name'>{item.name}</h5>
-                            <h5 className='text-white text-center mt-lg-4 mt-sm-4'> deadLine : {new Date(item.startDate).toLocaleDateString()}</h5>
+                           <div className='text-center'>
+                                <h5 className='text-white t-name badge rounded-pill bg-success'>{item.name}</h5>
+                           </div>
+                            <h5 className='text-white text-center mt-lg-4 mt-sm-4'> Dead Line : {new Date(item.startDate).toLocaleDateString()}</h5>
                             <div className='text-center mt-lg-3 mt-sm-3'>
                             <button className='btn btn-info text-center'>Particpate</button>
                             </div>

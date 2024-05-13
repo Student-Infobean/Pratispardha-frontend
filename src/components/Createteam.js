@@ -34,6 +34,8 @@ function Createteam() {
             const response = await axios.post(Api.createTeam, formData);
             console.log(response.data);
             toast(response.data.result);
+            
+            
         } catch (error) {
             console.error('Error:', error);
             toast("Oops Something wents wrong");
@@ -41,7 +43,6 @@ function Createteam() {
     }
 
     return <>
-        <Header />
         <ToastContainer/>
         <div id="carouselExampleDark" className="carousel carousel-dark slide my-5 mt-5 " data-bs-ride="carousel">
             <div className="carousel-inner">

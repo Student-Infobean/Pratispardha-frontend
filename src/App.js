@@ -14,6 +14,8 @@ import Teamdetails from "./components/MyTeam";
 import 'aos/dist/aos.css'
 import Aos from "aos";
 import { useEffect } from "react";
+import PointTable from "./components/Points";
+import PlayerInformation from "./components/PlayerInformation";
 function App() {
   useEffect(() =>{
     Aos.init();
@@ -30,8 +32,10 @@ function App() {
       
       <Route path='/event' element={<Auth><Events/></Auth>}></Route>
       <Route path='/event-info/:eventId' element={<Auth><EventInfo/></Auth>}></Route>
-      <Route path='/filterplayer' element={<Players/>}></Route>
+      <Route path='/filterplayer' element={<Auth><Players/></Auth>}></Route>
       <Route path='/myteam/:teamId' element={<Auth><Teamdetails/></Auth>}></Route>
+      <Route path="/point-table" element={<PointTable/>}></Route>
+      <Route path="/getplayerinfo/:playerId" element={<Auth><PlayerInformation/></Auth>}></Route>
     </Routes>
   </>
 };

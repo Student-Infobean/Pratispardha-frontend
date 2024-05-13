@@ -5,7 +5,7 @@ import axios from "axios";
 export const fetchTeamRequest = createAsyncThunk("playerSlice/fetchTeamRequest",async(playerId)=>{
     try{
        let response = await axios.get(`${Api.getPlayerbyId}/${playerId}`);
-       
+       console.log(response.data.result.requestedTeam);
        return response.data.result.requestedTeam;
     }
     catch(err){

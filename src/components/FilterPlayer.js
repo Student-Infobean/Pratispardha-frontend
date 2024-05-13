@@ -7,7 +7,8 @@ import { getAllPlayers } from '../redux-config/AllPlayerSlice';
 import axios from 'axios';
 import WebApi from './Webapi';
 import { ToastContainer, toast } from 'react-toastify';
-
+import { useNavigate } from 'react-router-dom';
+import Footer from './Footer'
 
 const style = `
 .img-container {
@@ -43,7 +44,7 @@ label{
 }
 
 .filter-box{
-    height : 36rem;
+    height : 1150px;
     position : sticky;
     top : 4rem;
     
@@ -55,6 +56,7 @@ label{
 }
 .styleinput{
     margin-left: 2rem;
+    margin-top : 1rem;
     border : 1px solid black;
     color : black;
 }
@@ -138,108 +140,43 @@ label{
   .card:hover .front-content p {
     opacity: 0;
   }
+  .handinput{
+    margin-left : 1rem;
+    display : inline-block;
+  }
+  .check{
+    margin-left : 8rem;
+  }
 `
 
 function Players(){
   
     let dispatch = useDispatch();
-    const [type, setType] = useState('All');
+    const [height, setHeight] = useState(150);
+    const [type, setType] = useState(null);
     const { filteredList } = useSelector((store) => store.AllPlayers);
-    const [selectedBattingStyles, setSelectedBattingStyles] = useState([]);
-    const [selectedRoles, setSelectedRoles] = useState([]);
-    const [selectedArmTypes, setSelectedArmTypes] = useState([]);
-    const [selectedBowlerTypes, setSelectedBowlerTypes] = useState([]);
-
     const [selectedBattingHand, setSelectedBattingHand] = useState([]);
     const [selectedBattingPosition, setSelectedBattingPosition] = useState([]);
     const [selectedArmType, setSelectedArmType] = useState([]);
     const [selectedBowlerType, setSelectedBowlerType] = useState([]);
-    
+    const [searchInput, setSearchInput] = useState(null);
+    const [age , setAge] = useState(40);
+
+    const player = JSON.parse(sessionStorage.getItem('current-user'));
+    const navigate = useNavigate()
+    const playerId = player._id;
+    const teamCaptain = player.team?.captain;
+      
     useEffect(() => {
         dispatch(getAllPlayers());
-        
     }, []);
-    
-    
-    const [playerCategory, setPlayerCategory] = useReducer((state, action)=>{
-
-                    state = action.payload;
-                    return [...state];
-                
-    }, [])
-    const handlePlayerType = async  (event) =>{
-        try {
-            
-            setType(event.target.value);
-            console.log(event.target.value)
-            let playerByType = await axios.get(`${WebApi.retriveByStyle}/${event.target.value}`)
-            setPlayerCategory({action : 'category', payload : playerByType.data.result});
-            console.log(playerByType)
-        } catch (error) {
-            console.log(error)
-        }
-        
-    }
-
-    
-
-    const filterPlayers = () => {
-        return playerCategory.filter(player => {
-            const isBattingStyleMatch = selectedBattingStyles.length === 0 || selectedBattingStyles.includes(player.playingStyle?.battingHand.toLowerCase());
-            console.log(selectedBattingStyles)
-            console.log(player.playingStyle?.battingHand.toLowerCase());
-            const isRoleMatch = selectedRoles.length === 0 || selectedRoles.includes(player.playingStyle?.battingPosition.toLowerCase());
-            return isBattingStyleMatch && isRoleMatch;
-        });
-    };
-    console.log(filterPlayers())
-
-    const handleCheckboxChange = (value, category) => {
-        if (category === 'battingStyle') {
-            const newStyles = selectedBattingStyles.includes(value.toLowerCase())
-                ? selectedBattingStyles.filter(style => style !== value.toLowerCase())
-                : [...selectedBattingStyles, value.toLowerCase()];
-                console.log(newStyles)
-            setSelectedBattingStyles(newStyles);
-        } else if (category === 'role') {
-            const newRoles = selectedRoles.includes(value.toLowerCase())
-                ? selectedRoles.filter(role => role !== value.toLowerCase())
-                : [...selectedRoles, value.toLowerCase()];
-                
-            setSelectedRoles(newRoles);
-        }
-        
-    };
-
-    const handleBowlerChange = (value, category) => {
-        if (category === 'armType') {
-            const newArmTypes = selectedArmTypes.includes(value.toLowerCase())
-                ? selectedArmTypes.filter(type => type !== value.toLowerCase())
-                : [...selectedArmTypes, value.toLowerCase()];
-            setSelectedArmTypes(newArmTypes);
-        } else if (category === 'bowlerType') {
-            const newBowlerTypes = selectedBowlerTypes.includes(value.toLowerCase())
-                ? selectedBowlerTypes.filter(type => type !== value.toLowerCase())
-                : [...selectedBowlerTypes, value.toLowerCase()];
-                console.log(newBowlerTypes)
-            setSelectedBowlerTypes(newBowlerTypes);
-        }
-    };
-    const filterBowler = () => {
-        
-        
-        return playerCategory.filter(player => {
-            const isArmTypeMatch = selectedArmTypes.length === 0 || selectedArmTypes.includes(player.playingStyle?.bowlingArm.toLowerCase());
-            const isBowlerTypeMatch = selectedBowlerTypes.length === 0 || selectedBowlerTypes.includes(player.playingStyle?.bowlingStyle.toLowerCase());
-            return isArmTypeMatch && isBowlerTypeMatch;
-        });
-    };
     
     const hanndleAllrounder = (value, category) => {
         if (category === 'battingStyle') {
             const newBattingHand = selectedBattingHand.includes(value.toLowerCase())
                 ? selectedBattingHand.filter(hand => hand !== value.toLowerCase())
                 : [...selectedBattingHand, value.toLowerCase()];
+                console.log(newBattingHand);
             setSelectedBattingHand(newBattingHand);
         } else if (category === 'role') {
             const newBattingPosition = selectedBattingPosition.includes(value.toLowerCase())
@@ -258,25 +195,26 @@ function Players(){
             setSelectedBowlerType(newBowlerTypes);
         }
     };
+    
     const filterAllRounder = () => {
-        console.log(selectedBattingHand)
-        console.log(selectedBattingHand.includes(playerCategory[0]?.playingStyle?.battingHand.toLowerCase()))
-        return playerCategory.filter(player => {
+
+        return filteredList.filter(player => {
+            const isAgeAvailable = !age || player.age <= age*1;
+            const ptyle =  !type ||   player.playerType.toLowerCase() == type?.toLowerCase() ;
+            const isHeight = player.height >=height;
             const isBattingHandMatch = selectedBattingHand.length === 0 || selectedBattingHand.includes(player.playingStyle?.battingHand.toLowerCase());
             const isBattingPositionMatch = selectedBattingPosition.length === 0 || selectedBattingPosition.includes(player.playingStyle?.battingPosition.toLowerCase());
             const isArmTypeMatch = selectedArmType.length === 0 || selectedArmType.includes(player.playingStyle?.bowlingArm.toLowerCase());
             const isBowlerTypeMatch = selectedBowlerType.length === 0 || selectedBowlerType.includes(player.playingStyle?.bowlingStyle.toLowerCase());
-            return isBattingHandMatch && isBattingPositionMatch && isArmTypeMatch && isBowlerTypeMatch;
+            return isAgeAvailable && ptyle && isHeight && isBattingHandMatch && isBattingPositionMatch && isArmTypeMatch && isBowlerTypeMatch;
         });
     };
-
-    
     const handleSendRequest = async (playerId) =>{
     
         let player = JSON.parse(sessionStorage.getItem('current-user'));
         console.log(player.team)
         try {
-                let response = await axios.post(WebApi.sendRequestToPlayer, {playerId, teamId : player.team});
+                let response = await axios.post(WebApi.sendRequestToPlayer, {playerId, teamId : player.team?._id});
                 console.log('clicked')
                 toast.success(response.data.result)
         } catch (error) {
@@ -284,6 +222,23 @@ function Players(){
             toast.success("error found")
         }
     }
+    const handleSearch = (event) =>{
+        event.target.value ? setSearchInput(event.target.value) : setSearchInput(null);
+    }
+    const filterName = () =>{
+        return filteredList.filter((player) => player.name.toLowerCase().includes(searchInput.toLowerCase()));
+    }
+
+    const handleResetFilters = () => {
+        setType(null);
+        setSelectedBattingHand([]);
+        setSelectedBattingPosition([]);
+        setSelectedArmType([]);
+        setSelectedBowlerType([]);
+        setSearchInput(null);
+    };
+
+
     const baseUrl = 'http://localhost:3000/images/';
     return <>
     <ToastContainer/>
@@ -293,141 +248,103 @@ function Players(){
             <div className='overlay'></div>
                 <img src={playerImage} className='img'  alt='...'></img>
                 <h2 className='pl-heading'>All Players</h2>
-            </div>
+            </div>  
         </div>
         <div className='container mt-lg-5 mt-sm-3'>
-            <input type='text' className='form-control t-input text-center fs-5 w-50 mb-lg-4 '   placeholder='Search for Players'  />
-            <div class="radio-container mt-lg-2">
-                                    <input type="radio" id="Batsman"  name='type' value="Batsman"  onChange={handlePlayerType}/>
-                                    <label for="Batsman" className='styleinput btn'>Batsman</label>
-
-                                    <input type="radio" id="Bowler"  name='type' value="Bowler"  onChange={handlePlayerType}/>
-                                    <label for="Bowler" className='styleinput btn'>Bowler</label>
-
-                                    <input type="radio" id="allrounder"  name='type'  value="Allrounder" onChange={handlePlayerType}/>
-                                    <label for="allrounder" className='styleinput btn'><i className="fa-solid fa-cricket-bat-ball"></i>Allrounder</label>
-
-                                    <input type="radio" id="wicketkeeper" name='type' value="Wicketkeeper"  onChange={handlePlayerType}/>
-                                    <label for="wicketkeeper" className='styleinput btn'>Wicket Keeper</label>
-            </div>
+            <input type='text' className='form-control t-input text-center fs-5 w-50 mb-lg-4 '   placeholder='Search for Players'  onChange={handleSearch}/>
+            
             <div className='row  contents'>
                <div className='col-lg-4  filter-box'>
                     <div className='text-center mt-lg-3'>
                             <i class="fa fa-filter fs-3"  aria-hidden="true"></i>
                             <span className='ms-lg-2 fs-3'>Filters</span><br/>
+                            <h5 className='float-start mt-lg-3 ms-lg-3'>Select PlayerType</h5>
+                            <div class="radio-container mt-lg-2">
+                                    <input type="radio" id="Batsman"  name='type' value="Batsman"  onChange={(event) =>setType(event.target.value)}/>
+                                    <label for="Batsman" className='styleinput btn'>Batsman</label>
+
+                                    <input type="radio" id="Bowler"  name='type' value="Bowler"  onChange={(event) =>setType(event.target.value)}/>
+                                    <label for="Bowler" className='styleinput btn'>Bowler</label>
+
+                                    <input type="radio" id="allrounder"  name='type'  value="All-rounder" onChange={(event) =>setType(event.target.value)}/>
+                                    <label for="allrounder" className='styleinput btn'><i className="fa-solid fa-cricket-bat-ball"></i>Allrounder</label>
+
+                                    <input type="radio" id="wicketkeeper" name='type' value="Wicketkeeper"  onChange={(event) =>setType(event.target.value)}/>
+                                    <label for="wicketkeeper" className='styleinput btn'>Wicket Keeper</label>
+
+                                    <label className='styleinput btn' onClick={handleResetFilters}>Reset</label>
+                                    <hr></hr>
+                            </div>
                             
-                            <input type="range" id="volume" className='w-75 mt-lg-3' name="volume" min="150" defaultValue='150' max="200"/>
-                            {/* <p className='heightValue'>Height : {height}</p> */}
+                            <input type="range" id="volume" className='w-75 mt-lg-3' name="volume" min="150"  max="200" onInput={(event) => setHeight(event.target.value)}/>
+                            <h5 className='heightValue'>Height : {height}</h5>
+                            <hr/>
+                            <input type='number' placeholder='Enter Prefered age' onChange={(event) => setAge(event.target.value)}/>
+                            <hr/>
 
                     </div>
-                    {type=='Batsman' ? <div className='batsman mb-lg-5'>
-                                    <input type='checkBox' value='Right Hand Bat' id='rightHand' className='ms-5' onChange={() => handleCheckboxChange('Right', 'battingStyle')}  />
-                                    <label for='rightHand' className='ms-1'>Right Hand Bat</label>
-                                    <input type='checkBox' value='left Hand Bat' id='leftHand' className='ms-5' onChange={() => handleCheckboxChange('Left', 'battingStyle')} />
-                                    <label for='leftHand' className='ms-1'>left Hand Bat</label> <br></br>
-
-                                    <div className='text-center mt-lg-5'>
-                                        <input type='checkbox' value='Opener' id='opener' onChange={() => handleCheckboxChange('opener', 'role')}/>
-                                        <label for='opener' className='ms-1'>Top Order</label><br/>
-                                        <input type='checkbox' value='middle' id='middle'className='mt-4'  onChange={() => handleCheckboxChange('middle', 'role')} />
-                                        <label for='middle' className='ms-1'>Middle Order</label><br/>
-                                        <input type='checkbox' value='finisher' id='finisher'className='mt-4'  onChange={() => handleCheckboxChange('finisher', 'role')}/>
-                                        <label for='finisher' className='ms-1'>Finisher</label>
-                                    </div>
-
-                            </div> : type=='Bowler' ?  
-                            
-                            <div className='bowler mb-lg-5'>
-                                    <input type='checkBox' value='left arm' id='leftArm' className='ms-5' onChange={() =>handleBowlerChange('left', 'armType')}/>
-                                    <label for='leftArm' className='ms-1 me-4'>Left Arm Bowl</label>
-                                    <input type='checkBox' value='Right arm' id='rightArm' className='ms-5' onChange={() =>handleBowlerChange('right', 'armType')}/>
-                                    <label for='rightArm' className='ms-1'>Right Arm Bowl</label> <br></br>
-
+                    <div className='allrounder mb-lg-5' >
+                            <h5 className='mt-lg-2 ms-lg-3' >Select Batting Hand</h5><br/>
+                                    <label for='rightHand' className='handinput'>Right Hand Bat</label>
+                                    <input type='checkBox' value='Right Hand Bat' id='rightHand'  className='check' onChange={() =>hanndleAllrounder('Right', 'battingStyle')}/> <br/>
+                                    
+                                    <label for='leftHand' className='handinput'>left Hand Bat</label>
+                                    <input type='checkBox' value='left Hand Bat' id='leftHand' style={{marginLeft : '8.9rem'}} onChange={() =>hanndleAllrounder('Left', 'battingStyle')}/>
+                                    
+                                    <hr/>
                                     <div className='mt-lg-4'>
-                                            <input type='checkbox' value='pacer' id='pacer' className='ms-5'onChange={() => handleBowlerChange('pacer', 'bowlerType')}/>
-                                            <label for='pacer' className='ms-1 me-5'>fast Bowler</label>
-                                            <input type='checkbox' value='spinner' id='spinner' className='ms-5' onChange={() => handleBowlerChange('spinner', 'bowlerType')}/>
-                                            <label for='spinner' className='ms-1'>Spin Bowler</label>
-                                    </div>
-                                    <div className='mt-lg-3 text-center'>
-                                            <input type='checkbox' value='leg-spinner' id='leg-spinner' onChange={() => handleBowlerChange('leg-spinner', 'bowlerType')}/>
-                                            <label for='leg-spinner' className='ms-1'>Leg Spinner</label><br/>
-                                            <input type='checkbox' value='off-spinner' id='off-spinner' className='mt-2'onChange={() => handleBowlerChange('off-spinner', 'bowlerType')}/>
-                                            <label for='off-spinner' className='ms-1'>Off Spinner</label><br/>
-                                            <input type='checkbox' value='chinaman' id='chinaman' className='mt-2'onChange={() => handleBowlerChange('chinaman-spinner', 'bowlerType')}/>
-                                            <label for='chinaman' className='ms-1'>Chinaman</label><br/>
-                                            <input type='checkbox' value='Mystry-spinner' id='Mystry-spinner'className='mt-2' onChange={() => handleBowlerChange('mystry-spinner', 'bowlerType')}/>
-                                            <label for='Mystry-spinner' className='ms-1'>Mystry Spinner</label>
-                                    </div>
-                            </div> : type=="Wicketkeeper" ? 
-                                    <div className='batsman mb-lg-5'>
-                                    <input type='checkBox' value='Right Hand Bat' id='rightHand' className='ms-5' onChange={() => handleBowlerChange('Right', 'battingStyle')}/>
-                                    <label for='rightHand' className='ms-1'>Right Hand Bat</label>
-                                    <input type='checkBox' value='left Hand Bat' id='leftHand' className='ms-5' onChange={() => handleBowlerChange('Left', 'battingStyle')}/>
-                                    <label for='leftHand' className='ms-1'>left Hand Bat</label> <br></br>
-
-                                    <div className='text-center mt-lg-5'>
-                                        <input type='checkbox' value='Opener' id='opener' onChange={() => handleCheckboxChange('opener', 'role')}/>
-                                        <label for='opener' className='ms-1'>Top Order</label><br/>
-                                        <input type='checkbox' value='middle' id='middle'className='mt-4' onChange={() => handleCheckboxChange('middle', 'role')}/>
-                                        <label for='middle' className='ms-1'>Middle Order</label><br/>
-                                        <input type='checkbox' value='finisher' id='finisher'className='mt-4' onChange={() => handleCheckboxChange('finisher', 'role')}/>
-                                        <label for='finisher' className='ms-1'>Finisher</label>
-                                    </div>
-
-                            </div>
-                            : <div className='allrounder mb-lg-5'>
-                                    <input type='checkBox' value='Right Hand Bat' id='rightHand' className='ms-5' onChange={() =>hanndleAllrounder('Right', 'battingStyle')}/>
-                                    <label for='rightHand' className='ms-1'>Right Hand Bat</label>
-                                    <input type='checkBox' value='left Hand Bat' id='leftHand' className='ms-5'onChange={() =>hanndleAllrounder('Left', 'battingStyle')}/>
-                                    <label for='leftHand' className='ms-1'>left Hand Bat</label> <br></br>
-
-                                    <div className='text-center mt-lg-5'>
-                                        <input type='checkbox' value='Opener' id='opener' onChange={() =>hanndleAllrounder('opener', 'role')}/>
-                                        <label for='opener' className='ms-1'>Top Order</label><br/>
-                                        <input type='checkbox' value='middle' id='opener'className='mt-4' onChange={() =>hanndleAllrounder('middle', 'role')}/>
-                                        <label for='middle' className='ms-1'>Middle Order</label><br/>
-                                        <input type='checkbox' value='Opener' id='opener'className='mt-4'  onChange={() => hanndleAllrounder('finisher', 'role')}/>
-                                        <label for='finisher' className='ms-1'>Finisher</label>
+                                    <h5 className='float-start ms-3' >Select Batting Position</h5><br/><br/>
+                                        <label for='opener' className='handinput'>Top Order</label>
+                                        <input type='checkbox' value='Opener' id='opener' style={{marginLeft : '10rem'}} onChange={() =>hanndleAllrounder('opener', 'role')}/><br></br>
+                                        <label for='middle' className='handinput'>Middle Order</label>
+                                        <input type='checkbox' value='middle' id='opener' style={{marginLeft : '8.5rem'}}  onChange={() =>hanndleAllrounder('middle', 'role')}/><br></br>
+                                        <label for='finisher' className='handinput'>Finisher</label>
+                                        <input type='checkbox' value='Opener' id='opener' style={{marginLeft : '11rem'}}  onChange={() => hanndleAllrounder('finisher', 'role')}/><br></br>
+                                        <hr/>
                                     </div>
                                     <div className='mt-lg-2'>
-                                            <input type='checkBox' value='left arm' id='leftArm' className='ms-5'onChange={() => hanndleAllrounder('left', 'armType')}/>
-                                            <label for='leftArm' className='ms-1 me-4'>Left Arm Bowl</label>
-                                            <input type='checkBox' value='Right arm' id='rightArm' className='ms-5'onChange={() => hanndleAllrounder('right', 'armType')}/>
-                                            <label for='rightArm' className='ms-1'>Right Arm Bowl</label> <br></br>
-
-                                            <div className='mt-lg-4'>
-                                                    <input type='checkbox' value='pacer' id='pacer' className='ms-5'onChange={() => hanndleAllrounder('pacer', 'bowlerType')}/>
-                                                    <label for='pacer' className='ms-1 me-5'>fast Bowler</label>
-                                                    <input type='checkbox' value='spinner' id='spinner' className='ms-5'onChange={() => hanndleAllrounder('spinner', 'bowlerType')}/>
-                                                    <label for='spinner' className='ms-1'>Spin Bowler</label>
+                                    <h5 className='float-start ms-3' >Select Bowling Arm</h5><br/><br/>
+                                            <label for='leftArm' className='handinput'>Left Arm Bowl</label>
+                                            <input type='checkBox' value='left arm' id='leftArm' style={{marginLeft : '8rem'}} onChange={() => hanndleAllrounder('left', 'armType')}/><br/>
+                                            <label for='rightArm' className='handinput'>Right Arm Bowl</label>
+                                            <input type='checkBox' value='Right arm' id='rightArm' style={{marginLeft : '7.3rem'}} onChange={() => hanndleAllrounder('right', 'armType')}/>
+                                            
+                                        <hr/>
+                                            <div className=''>
+                                                    <h5 className='float-start ms-3' >Select Bowling Speed</h5><br/><br/>
+                                                    <label for='pacer' className='handinput'>fast Bowler</label>
+                                                    <input type='checkbox' value='pacer' id='pacer' style={{marginLeft : '9.2rem'}} onChange={() => hanndleAllrounder('pacer', 'bowlerType')}/><br/>
+                                                    <label for='spinner' className='handinput'>Spin Bowler</label>
+                                                    <input type='checkbox' value='spinner' id='spinner' style={{marginLeft : '8.8rem'}} onChange={() => hanndleAllrounder('spinner', 'bowlerType')}/>
+                                                    <hr/>
                                             </div>
-                                            <div className='mt-lg-3 text-center'>
-                                                    <input type='checkbox' value='leg-spinner' id='leg-spinner'onChange={() => hanndleAllrounder('leg-spinner', 'bowlerType')}/>
-                                                    <label for='leg-spinner' className='ms-1'>Leg Spinner</label><br/>
-                                                    <input type='checkbox' value='off-spinner' id='off-spinner' className='mt-2'onChange={() => hanndleAllrounder('off-spinner', 'bowlerType')}/>
-                                                    <label for='off-spinner' className='ms-1'>Off Spinner</label><br/>
-                                                    <input type='checkbox' value='chinaman' id='chinaman' className='mt-2'onChange={() => hanndleAllrounder('chinaman-spinner', 'bowlerType')}/>
-                                                    <label for='chinaman' className='ms-1'>Chinaman</label><br/>
-                                                    <input type='checkbox' value='Mystry-spinner' id='Mystry-spinner'className='mt-2'onChange={() => hanndleAllrounder('mystry-spinner', 'bowlerType')}/>
+                                            <div className=''>
+                                            <h5 className='float-start ms-3' >Select Bowling Style</h5><br/><br/>
+                                                    <label for='leg-spinner' className='ms-1'>Leg Spinner</label>
+                                                    <input type='checkbox' value='leg-spinner' id='leg-spinner' style={{marginLeft : '9.3rem'}} onChange={() => hanndleAllrounder('leg-spinner', 'bowlerType')}/><br/>
+                                                    <label for='off-spinner' className='ms-1'>Off Spinner</label>
+                                                    <input type='checkbox' value='off-spinner' id='off-spinner' style={{marginLeft : '9.5rem'}}onChange={() => hanndleAllrounder('off-spinner', 'bowlerType')}/><br/>
+                                                    <label for='chinaman' className='ms-1'>Chinaman</label>
+                                                    <input type='checkbox' value='chinaman' id='chinaman'style={{marginLeft : '10.1rem'}} onChange={() => hanndleAllrounder('chinaman', 'bowlerType')}/><br/>
                                                     <label for='Mystry-spinner' className='ms-1'>Mystry Spinner</label>
+                                                    <input type='checkbox' value='Mystry-spinner' id='Mystry-spinner'style={{marginLeft : '8rem'}}onChange={() => hanndleAllrounder('mystry-spinner', 'bowlerType')}/>
+                                                    <hr/>
                                             </div>
                                         </div>
-                            </div>}
+                            </div>
                 </div>
                 <div className='col-lg-7 offset-1'>
                             <div className='row mt-lg-2 '>
                                 
-                                {(type=="Bowler" ? filterBowler() : type=='Allrounder' ?  filterAllRounder() : type=="All" ? filteredList : filterPlayers()).map((player, index) => <div className='col-lg-5 text-center cards offset-1 mt-lg-2 mb-lg-3' key={index}>
+                                {(searchInput ? filterName() : filterAllRounder()).map((player, index) => <div className='col-lg-5 text-center cards offset-1 mt-lg-2 mb-lg-3' key={index} data-aos='zoom-in'>
                                 <div class="card-container">
                         <div class="card">
                             <div class="front-content">
-                                <p><img src={passportImage} alt="" style={{ height: "18rem", width: "15rem" }} />
+                                <p><img onClick={() =>navigate(`/getplayerinfo/${player._id}`)} src={baseUrl+player.image} alt="" style={{ height: "18rem", width: "15rem", objectFit : 'cover' }} />
                                     <center><h3 className='mt-lg-4'>{player.name}</h3></center>
                                 </p>
-                                {console.log(player)}
                             </div>
-                            <div class="content">
+                            <div class="content" >
                                 <p className="heading mt-2">{player.name}</p>
                                 <p>{player.playerType}</p>
                                 <p>Age : {player.age} Height : {player.height}</p>
@@ -436,15 +353,16 @@ function Players(){
                                 
                         </div>
                     </div>
-                    <button className='btn mt-lg-2' onClick={() =>handleSendRequest(player.id)}  style={{width:"96%",background: "linear-gradient(-45deg,#1cc6e3 0%, #020338 100%) ", border : 'none'}}>Request</button>
+                    {playerId==teamCaptain ? <button className='btn mt-lg-2' onClick={() =>handleSendRequest(player.id)}  style={{width:"96%",background: "linear-gradient(-45deg,#1cc6e3 0%, #020338 100%) ", border : 'none'}}>Request</button> : ""}
                      </div>)}
                             </div>
                 </div>
 
             </div>  
         </div>
+        <Footer/>
         <style>{style}</style>
-        {/* <PlayerFilter/> */}
+        
     </>
 }
 

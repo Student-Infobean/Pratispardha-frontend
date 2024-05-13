@@ -2,27 +2,26 @@
 import Header from "./Header";
 import "../Team.css";
 import { useEffect } from "react";
-import banner from "../images/banner.jpeg";
 import { useNavigate, useParams } from "react-router-dom";
-import logo from "../images/post.jpg";
-import club from "../images/club-1.webp";
 import { useSelector ,useDispatch} from "react-redux";
 import { getTeamById } from "../redux-config/TeamDetail";
+import { compose } from "@reduxjs/toolkit";
+import Footer from "./Footer";
 function Teamdetails() {
     const params  = useParams();
     const teamId = params.teamId;
     const playerTeam  = JSON.parse(sessionStorage.getItem('current-user')).team
     const { activePlayer, isLoggedIn } = useSelector((store) => store.player);
     const {team, isLoading} = useSelector((store) => store.teamdetail);
-   
+    
+    console.log(team?.players)
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const baseUrl = 'http://localhost:3000/images/';
-    
     useEffect(() =>{
         dispatch(getTeamById(teamId))
     }, [])
-    
+    console.log(team)
    
     return <>
         {isLoading ? <div className="loader"></div> : 
@@ -50,7 +49,8 @@ function Teamdetails() {
                                 <img src={baseUrl+`${team && team.logo}`}  alt="" style={{ width: "50%", height: "50%",borderRadius:"50%"}} />
                                 <h2 >CAPTAIN</h2>
                                 <span style={{textTransform:"uppercase" }}>{team?.captain?.name}</span>
-                                <p>{team?.captain?.playerType}</p>
+                                <p>{team?.captain?.playingStyle.bowlingStyle}</p>
+                                <p>{team?.captain?.playingStyle.battingPosition}</p>
                             </div>
                         </div> 
                     </div>
@@ -60,25 +60,67 @@ function Teamdetails() {
         </div>
         <div className="container-fluid">
             <div className="row">
-                <h4 className="mt-4">Players</h4>
-                <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12">
-                    <div class="cardteam">
-                        <div class="icon">
-                            <img src={club} alt="" style={{ height: "90%" }} />
+                <h4 className="mt-4">Batsman</h4>
+                {team.players?.filter((player, index) =>player.playerId.playerType == "Batsman").map((item,index) =><div className="col-lg-4 col-md-6 col-sm-12 col-xs-12">
+                    <div className="cardteam">
+                        <div className="icon" style={{width : '250px'}}>
+                            
+                            <img src={baseUrl+item.playerId.image} alt="" style={{ height: "100%", borderRadius : '50%' }} />
                         </div>
-                        <p class="title">Player Name</p>
-                        <p class="text">sdfgsdgfkdgkfhfk
-                            <span>dfdsgsdgkds</span>
-                            <h3>ertewtruw</h3>
+                        
+                        <p className="title">{item.playerId.name}</p>
+                        <p className="text">{item.playerId.playingStyle.battingHand} Handed Bat <br></br>
+                            <span></span>
+                            <h6 className="fs-5 mt-lg-2">{item.playerId.playingStyle.battingPosition =="Opener" ? "Top Order Batsman" : item.playerId.playingStyle.battingPosition =="middle" ? 'Middle Order Batsman' : 'Finisher'}</h6>
                         </p>
                     </div>
-                </div>
+                </div>)}
+            </div>
+
+            <div className="row">
+                <h4 className="mt-4">Bowlers</h4>
+                {team.players?.filter((player, index) =>player.playerId.playerType == "Bowler").map((item,index) =><div className="col-lg-4 col-md-6 col-sm-12 col-xs-12">
+                    <div className="cardteam">
+                        <div className="icon" style={{width : '250px'}}>
+                            
+                            <img src={baseUrl+item.playerId.image} alt="" style={{ height: "100%", borderRadius : '50%' }} />
+                        </div>
+                        
+                        <p className="title">{item.playerId.name}</p>
+                        <p className="text">{item.playerId.playingStyle.bowlingArm} Arm Bowler <br></br>
+                            <span></span>
+                            <h6 className="fs-5 mt-lg-2">{item.playerId.playingStyle.bowlingStyle}</h6>
+                        </p>
+                    </div>
+                </div>)
+                    
+                }
+            </div>
+
+            <div className="row">
+                <h4 className="mt-4">All-Rounders</h4>
+                {team.players?.filter((player, index) =>player.playerId.playerType == "All-Rounder").map((item,index) =><div className="col-lg-4 col-md-6 col-sm-12 col-xs-12">
+                    <div className="cardteam">
+                        <div className="icon" style={{width : '250px'}}>
+                            
+                            <img src={baseUrl+item.playerId.image} alt="" style={{ height: "100%", borderRadius : '50%' }} />
+                        </div>
+                        
+                        <p className="title">{item.playerId.name}</p>
+                        <p className="text">{item.playerId.playingStyle.bowlingArm} Arm Bowler <br></br>
+                            <span></span>
+                            <h6 className="fs-5 mt-lg-2">{item.playerId.playingStyle.bowlingStyle}</h6>
+                        </p>
+                    </div>
+                </div>)
+                    
+                }
             </div>
         </div>
-        <center>{playerTeam ==team._id ? <button className="btn btn-danger my-5" onClick={() =>navigate('/filterplayer')}>Add PLayer</button> : ""}</center>
-
-            </div>
-        
+        <center>{playerTeam?._id ==team?._id ? <button className="btn btn-danger my-5" onClick={() =>navigate('/filterplayer')}>Add PLayer</button> : ""}</center>
+        <Footer/>
+         </div>
+       
         }
     </>
 }

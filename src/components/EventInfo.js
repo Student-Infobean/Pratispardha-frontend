@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import Api from './Webapi';
 import axios from "axios";
 import iplImage from '../images/12973395.jpg'
+import Footer from "./Footer";
 const style = `
     .rules{
         
@@ -94,7 +95,7 @@ function EventInfo(){
                     <strong>DeadLine</strong>
                     <p>{new Date(tournament.deadLine).toLocaleDateString('en-US', { day: 'numeric', month: 'long', year: 'numeric' })}</p>
                     <strong>Entry fee</strong>
-                    <p>{tournament.entryFees} RS.</p>
+                    <p>{tournament.fees} RS.</p>
                     <strong>Format</strong>
                     <p>{tournament.format} overs</p>
                     <strong>First Prize</strong>
@@ -131,6 +132,7 @@ function EventInfo(){
         )}
         </div>
         </div>}
+        <Footer/>
         <style>{style}</style>
     </>
 }

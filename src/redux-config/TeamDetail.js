@@ -7,7 +7,6 @@ export const getTeamById = createAsyncThunk("Teamdetail/getTeamById",async (id) 
   
     try {
       let response = await axios.get(`${Api.getTeamId}/${id}`);
-      console.log('asdnfnaods');
       return response.data.team
     } catch (error) {
       console.log(error)

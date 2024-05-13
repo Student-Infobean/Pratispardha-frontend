@@ -1,0 +1,28 @@
+
+  .main{
+    backdrop-filter: blur(10px);
+    height: 200vh;
+    width: 100%;
+    z-index:1;
+    position:absolute;
+    top: 0;
+  }
+  .popup{
+    
+    height: 270px;
+    width: 25%;
+    color: aliceblue;
+    background-color: rgba(0,0, 0, .7);
+    position: absolute;
+    top: 25%;
+    right: 35%;
+    border-radius: 15px;
+  }
+  .popup-header{
+    display: flex;
+    padding: 0 20px 0 100px;
+    /* border-bottom: 2px solid black; */
+  }
+  .popup-header h2{
+    text-align: center;
+  }

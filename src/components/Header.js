@@ -23,13 +23,12 @@ function Header() {
     // }, []);
     const isCaptain = currentUser && currentUser.team?.captain == currentUser._id;
 
-    console.log(isCaptain)
-
     const handleLogOut = () =>{
     
         if(window.confirm("Are You sure !")){
             dispatch(logOut())
         }
+        navigate('/')
     }
     return <>
         <div className="container-fluid d-flex align-items-center " style={{ backgroundColor: "#102C57" }}>
@@ -42,6 +41,7 @@ function Header() {
                     <i className="fa fa-linkedin-square text-light  px-3" style={{ fontSize: "22px" }}></i>
                 </div>
             </div>
+            {/* {isLoggedIn ? <h5 className="text-white" style={{marginLeft : '6s2rem', marginTop : '0.4rem'}}>Hello &nbsp;&nbsp;&nbsp;{currentUser.name}</h5> : ""} */}
         </div>
         <div class="container-fliud bg-white">
             <nav class="navbar navbar-expand-lg ">
@@ -62,6 +62,14 @@ function Header() {
                                     Home
                                 </a>
                             </li>
+                            <ul class="navbar-nav text-center">
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link  fw-bold px-4" style={{color:"#102C57"}}  href="/point-table">
+                                        Standings
+                                    </a>
+                                </li>
+
+                            </ul>
                             <ul class="navbar-nav text-center">
                                 <li class="nav-item dropdown">
                                     <a class="nav-link  fw-bold px-4" style={{color:"#102C57"}}  href="/filterplayer" id="navbarDropdownMenuLink">
@@ -107,7 +115,7 @@ function Header() {
                                         {isLoggedIn ? <span><i className="fs-3 fa fa-user-circle "  style={{color:"#102C57"}} ></i></span> : ""}
                                     </a>
                                     <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink" style={{cursor:"pointer",color:"#102C57"}}  >
-                                        <li><a class="dropdown-item" >{isLoggedIn ? <i className="fs-5 fa fa-sign-out me-2"  style={{color:"#102C57"}} >&nbsp;&nbsp;&nbsp;My Profile</i> : ''}</a></li>
+                                        <li><a onClick={() => navigate(`/getplayerinfo/${currentUser._id}`)} class="dropdown-item" >{isLoggedIn ? <i className="fs-5 fa fa-sign-out me-2"  style={{color:"#102C57"}} >&nbsp;&nbsp;&nbsp;My Profile</i> : ''}</a></li>
                                         <li><a class="dropdown-item" >{teamId != null ? <i className="fs-5 fa fa-group me-2"  style={{color:"#102C57"}}  onClick={()=>navigate(`/myteam/${teamId}`)}>&nbsp;&nbsp;&nbsp;My Team </i> : <button className="btn btn-outline-warning" na>Create team</button>}</a></li>
                                         <li onClick={handleLogOut}><a class="dropdown-item" >{isLoggedIn ? <i className="fs-5 fa fa-sign-out me-2"  style={{color:"#102C57"}} >&nbsp;&nbsp;&nbsp;Logout</i> : ''}</a></li>
                                         

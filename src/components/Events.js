@@ -5,6 +5,7 @@ import { useEffect, useRef } from 'react'
 import { filterName, filterTournament, getTournament } from '../redux-config/TournamentSlice'
 import { useNavigate } from 'react-router-dom'
 import { ToastContainer, toast } from 'react-toastify'
+import Footer from './Footer'
 function Events(){
     const style = `
     .tournament-container {
@@ -134,15 +135,15 @@ function Events(){
             </div>
             {tournamentList.map((item, index) =><div className='row mt-lg-5 border' key={index}>
                 <div className='col-lg-7 position-relative '>
-                    <h3 className='d-inline-block  mt-lg-4'>{new Date(item.deadLine).getDate()}<br/>{new Date(item.deadLine).toLocaleDateString('en-US', { month: 'long' })}</h3>
-                    <i class="fa fa-calendar ms-2 border t-dates" aria-hidden="true"></i>
+                    <h3 className='d-inline-block  mt-lg-4'>{new Date(item.deadline).getDate()}<br/>{new Date(item.deadline).toLocaleDateString('en-US', { month: 'long' })}</h3>
+                    <i class="fa fa-calendar ms-2 border t-dates" aria-hidden="true"></i><small className='t-duration ms-lg-1'>{new Date(item.startDate).toLocaleDateString('en-US', { day: 'numeric', month: 'long', year: 'numeric' })} - {new Date(item.endDate).toLocaleDateString('en-US', { day: 'numeric', month: 'long', year: 'numeric' })}</small>
                     <h1 className='fw-normal  t-name'>{item.name}</h1>
                     <h3 className='fw-normal t-address'>{item.address}</h3>
                     <p className=' mt-lg-4 t-info'>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce laoreet, ligula condimentum tincidunt, arcu orci laoreet massa, nec sagittis elit urna in diam. Sed consectetur dolor non nulla porttitor,…</p>
                     <h2 className='fw-normal t-prize'>Winning Price : <h2 className='text-success d-inline-block'>{item.firstPrize+item.secondPrize+item.thirdPrize}</h2></h2>
                     {new Date(item.startDate) > new Date() ? <div className='text-center mt-lg-3 mb-lg-2'>
-                    {item && item.deadLine && (
-                        new Date(item.deadLine) > new Date() ? (
+                    {item && item.deadline && (
+                        new Date(item.deadline) > new Date() ? (
                             <button className="btn btn-secondary" onClick={handleParticipate}>
                                 Participate
                             </button>
@@ -157,6 +158,7 @@ function Events(){
                 </div>
             </div>)}
         </div>
+        <Footer/>
         <style>{style}</style>
     </>
 }
