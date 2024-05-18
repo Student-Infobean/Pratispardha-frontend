@@ -1,7 +1,21 @@
 export default {
-    PlayerSignup :"http://localhost:3001/player/signup",
-    PlayerSignin :"http://localhost:3001/player/signIn",
-    getPlayerbyId:"http://localhost:3001/player/getplayerinfo",
-    teamList:"http://localhost:3001/team/teamlist",
-    createTeam:"http://localhost:3001/team/create"
+    PlayerSignup :"http://localhost:3000/player/signup",
+    PlayerSignin :"http://localhost:3000/player/signIn",
+    getPlayerbyId:"http://localhost:3000/player/requestedTeams",
+    teamList:"http://localhost:3000/team/teamlist",
+    createTeam:"http://localhost:3000/team/create",
+    tournamentList: 'http://localhost:3000/tournament/viewAllTournaments',
+    getallplayer :    'http://localhost:3000/player/getallplayer',
+    getSingleTournament : 'http://localhost:3000/tournament/getTournament',
+    retriveByStyle : 'http://localhost:3000/player/getStyle',
+    sendRequestToPlayer : 'http://localhost:3000/team/sendrequest',
+    getTeamId:"http://localhost:3000/team/viewteam",
+    acceptRequest : "http://localhost:3000/player/accept",
+    rejectRequest : "http://localhost:3000/player/reject",
+    getPoints:"http://localhost:3000/point/getPoints",
+    getAllTournaments : "http://localhost:3000/tournament/getAllTournament",
+    ForgotPassword : "http://localhost:3000/player/forgotPassword",
+    ResetPassword : "http://localhost:3000/player/resetPassword",
+    sendRequestToTeam : "http://localhost:3000/player/sendRequestToTeam",
+    getPlayerInfo : "http://localhost:3000/player/getplayerinfo"
 };

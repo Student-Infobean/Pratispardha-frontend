@@ -126,7 +126,6 @@ function Signup() {
   };
 
   return <>
-    <Header />
     <ToastContainer />
     <section className="">
       <div className="container h-custom mt-3 border border-dark rounded">
@@ -174,7 +173,7 @@ function Signup() {
               </div>
             </div>
             <button onClick={signUpPlayer} class="btn bg-info w-75 ms-5 rounded-pill fs-5 mt-4">Submit</button>
-            <p class="mt-3 ms-3 fs-5">Already have an acount ? <a href="" onClick={() => navigate("/")} style={{ cursor: "pointer" }}> sign In</a> </p>
+            <p class="mt-3 ms-3 fs-5">Already have an acount ? <a href="" onClick={() => navigate("/signin")} style={{ cursor: "pointer" }}> sign In</a> </p>
           </div>
         </div>
       </div>
