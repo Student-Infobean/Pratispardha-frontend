@@ -6,6 +6,14 @@ import { getTeamById } from "../redux-config/TeamDetail";
 import { useNavigate } from "react-router-dom";
 import { logOut } from "../redux-config/PlayerSlice";
 import { current } from "@reduxjs/toolkit";
+const css=`
+.nav-link{
+        color:#102C57;
+    }
+    .nav-link:hover{d
+        color:#FFC107;
+    }
+`
 function Header() {
     let { activePlayer } = useSelector((store) => store.player);
     let isLoggedIn  = !!JSON.parse(sessionStorage.getItem('current-user'))
@@ -58,13 +66,13 @@ function Header() {
                         <div className=" me-5 pe-5">
                         <ul class="navbar-nav text-center text-dark fs-bolder" style={{ fontSize: "18px", fontWeight: "350"}}>
                             <li class="nav-item dropdown" >
-                            <a class="nav-link  fw-bold px-4" style={{color:"#102C57"}} href="/" id="navbarDropdownMenuLink" >
+                            <a class="nav-link  fw-bold px-4" href="/" id="navbarDropdownMenuLink" >
                                     Home
                                 </a>
                             </li>
                             <ul class="navbar-nav text-center">
                                 <li class="nav-item dropdown">
-                                    <a class="nav-link  fw-bold px-4" style={{color:"#102C57"}}  href="/point-table">
+                                    <a class="nav-link  fw-bold px-4" href="/point-table">
                                         Standings
                                     </a>
                                 </li>
@@ -72,7 +80,7 @@ function Header() {
                             </ul>
                             <ul class="navbar-nav text-center">
                                 <li class="nav-item dropdown">
-                                    <a class="nav-link  fw-bold px-4" style={{color:"#102C57"}}  href="/filterplayer" id="navbarDropdownMenuLink">
+                                    <a class="nav-link  fw-bold px-4"   href="/filterplayer" id="navbarDropdownMenuLink">
                                         Players
                                     </a>
                                 </li>
@@ -80,7 +88,7 @@ function Header() {
                             </ul>
                             <ul class="navbar-nav text-center">
                                 <li class="nav-item dropdown">
-                                    <a class="nav-link fw-bold  px-4" style={{color:"#102C57"}}  href="/Teamdetails" id="navbarDropdownMenuLink">
+                                    <a class="nav-link fw-bold  px-4"   href="/Teamdetails" id="navbarDropdownMenuLink">
                                         Teams
                                     </a>
                                 </li>
@@ -88,14 +96,14 @@ function Header() {
                             </ul>
                             <ul class="navbar-nav text-center">
                                 <li class="nav-item dropdown">
-                                    <a class="nav-link fw-bold px-4" style={{color:"#102C57"}}  href="/event" id="navbarDropdownMenuLink" >
+                                    <a class="nav-link fw-bold px-4"   href="/event" id="navbarDropdownMenuLink" >
                                         Events
                                     </a>
                                 </li>
                             </ul>
                             <ul class="navbar-nav text-center">
                                 <li class="nav-item dropdown">
-                                    <a class="nav-link fw-bold px-4" style={{color:"#102C57"}}  href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <a class="nav-link fw-bold px-4"   href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                         About
                                     </a>
                                 </li>
@@ -103,7 +111,7 @@ function Header() {
                             </ul>
                             <ul class="navbar-nav text-center">
                                 <li class="nav-item dropdown">
-                                    <a class="nav-link fw-bold px-4" href="#" style={{color:"#102C57"}}  id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <a class="nav-link fw-bold px-4" href="#"  id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                         Contact
                                     </a>
                                 </li>
@@ -111,7 +119,7 @@ function Header() {
                             </ul>
                             <ul class="navbar-nav text-center ">
                                 <li class="nav-item dropdown">
-                                    <a class="nav-link text-dark fw-bold px-3" style={{color:"#102C57"}}  href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <a class="nav-link text-dark fw-bold px-3"  href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                         {isLoggedIn ? <span><i className="fs-3 fa fa-user-circle "  style={{color:"#102C57"}} ></i></span> : ""}
                                     </a>
                                     <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink" style={{cursor:"pointer",color:"#102C57"}}  >
@@ -139,6 +147,7 @@ function Header() {
                 </div>
             </nav>
         </div>
+        <style>{css}</style>
     </>
 }
 export default Header;

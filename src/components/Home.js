@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import About from "./About-Home";
 import BestPlayer from "./BestPlayers";
-
 import Carousel from "./Carousel"
 import EntityInfo from "./EntityInfo";
 import Footer from "./Footer";

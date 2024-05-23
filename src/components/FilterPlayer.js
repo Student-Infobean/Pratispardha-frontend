@@ -25,10 +25,10 @@ const style = `
   }
   .pl-heading{
     position :absolute;
-    top : 22rem;
-    left : 41rem;
+    top : 10rem;
+    left : 34rem;
     color : white;
-
+    font-size: 6rem;
   }
   .t-input{
     border : none ;
@@ -247,7 +247,7 @@ function Players(){
             <div className="img-container">
             <div className='overlay'></div>
                 <img src={playerImage} className='img'  alt='...'></img>
-                <h2 className='pl-heading'>All Players</h2>
+                <h1 className='pl-heading'>All Players</h1>
             </div>  
         </div>
         <div className='container mt-lg-5 mt-sm-3'>
@@ -348,6 +348,7 @@ function Players(){
                                 <p className="heading mt-2">{player.name}</p>
                                 <p>{player.playerType}</p>
                                 <p>Age : {player.age} Height : {player.height}</p>
+                                <p></p>
                                 {/* <p>{player.stats.totalMatches}</p> */}
                                     </div>
                                 
